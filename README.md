@@ -22,7 +22,7 @@ This project allows you to configure and preview an IKEA SKÅDIS-like board with
 
 ## 🖼 Live Demo
 
-🔗 [View the generator](https://idlerus.github.io/skadis-generator/)
+🔗 [View the generator](https://idlerus.github.io/skadis_generator/)
 
 ---
 
