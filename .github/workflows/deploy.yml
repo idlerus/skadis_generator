@@ -2,45 +2,41 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Default deployment branch
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-
-      - name: Preload upload-artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: dummy
-          path: README.md
-
-      - name: Install dependencies
+          node-version: 20
+          cache: 'npm'
+      - name : Install dependencies
         run: npm install
-
       - name: Build
         run: npm run build
-
+      - name: Setup pages
+        uses: actions/configure-pages@v3
       - name: Upload artifact for Pages
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
-          path: ./dist
-
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
